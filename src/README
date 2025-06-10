@@ -1,0 +1,22 @@
+src/
+├── api/
+│   ├── __init__.py
+│   ├── auth.py        # 인증 관련 라우터
+│   ├── parent.py      # 부모 관련 라우터
+│   ├── child.py       # 자녀 관련 라우터
+│   └── video.py       # 비디오 관련 라우터
+├── core/
+│   ├── __init__.py
+│   ├── config.py      # 설정
+│   ├── security.py    # 보안 관련 함수
+│   └── camera.py      # 카메라 관련 함수
+├── db/
+│   ├── __init__.py
+│   └── database.py    # 데이터베이스 연결
+├── models/
+│   ├── __init__.py
+│   └── detector.py    # 기존 detector
+├── schemas/
+│   ├── __init__.py
+│   └── user.py        # Pydantic 모델
+└── main.py

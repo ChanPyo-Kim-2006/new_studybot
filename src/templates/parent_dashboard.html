@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>집중봇 - 부모님 대시보드</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/parent_dashboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard-container">
+            <header class="dashboard-header">
+                <h1>하티오 | 집중봇</h1>
+                <div class="user-info">
+                    <span>{{ username }} 님</span>
+                    <button onclick="logout()" class="btn secondary-btn">로그아웃</button>
+                </div>
+            </header>
+
+            <main class="dashboard-content">
+                <h2>자녀 목록</h2>
+                
+                {% if children %}
+                <div class="children-list">
+                    {% for child in children %}
+                        <div class="child-card">
+                            <h3>{{ child.username }}</h3>
+                            <p>이메일: {{ child.email }}</p>
+                            <p>자녀 코드: {{ child.child_code }}</p>
+                            <p>지역: {{ child.region }}</p>
+                            <p>학교: {{ child.school_name }}</p>
+                            <button onclick="viewChildStatus('{{ child.child_code }}')">상태 보기</button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="no-children">
+                        <p>등록된 자녀가 없습니다.</p>
+                        <p>자녀 코드를 입력하여 자녀를 등록해주세요.</p>
+                    </div>
+                {% endif %}
+
+                <div class="add-child-section">
+                    <h3>자녀 추가하기</h3>
+                    <div class="form-group">
+                        <input type="text" id="newChildCode" 
+                               placeholder="자녀 코드 입력 (예: STU-1234-5678)">
+                        <button onclick="addChild()" class="btn primary-btn">자녀 추가</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="{{ url_for('static', path='js/parent_dashboard.js') }}" defer></script>
+</body>
+</html>

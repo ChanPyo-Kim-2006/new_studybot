@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBot - 실시간 모니터링</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="/static/js/main.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>실시간 집중 모니터링</h1>
+        
+    <div class="video-container">
+        <img src="{{ video_feed_url }}" alt="웹캠 스트림" id="video-feed">
+</div>
+
+        <div class="status-container">
+            <div class="status-item">
+                <div class="status-label">현재 상태</div>
+                <div id="concentration-status" class="status-value">초기화 중...</div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-label">집중도</div>
+                <div class="status-value">
+                    <span id="concentration-score">0</span>%
+                    <div class="progress-bar">
+                        <div id="concentration-progress" class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-label">시선 상태</div>
+                <div id="gaze-status" class="status-value">확인 중...</div>
+            </div>
+
+            <div class="status-item">
+                <div class="status-label">얼굴 감지</div>
+                <div id="face-detected" class="status-value">확인 중...</div>
+            </div>
+        </div>
+
+        <button onclick="logout()" class="btn">로그아웃</button>
+    </div>
+</body>
+</html>

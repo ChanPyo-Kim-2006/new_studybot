@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자녀 학습 현황</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/child_status.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>자녀 학습 현황 모니터링</h1>
+        <div class="nav-buttons">
+            <button onclick="location.href='/parent/dashboard'" class="btn secondary-btn">대시보드</button>
+            <button onclick="logout()" class="btn logout-btn">로그아웃</button>
+        </div>
+        <div class="status-container">
+            <div class="child-info">
+                <h2>{{ child_name }}님의 학습 상태</h2>
+                <p>자녀 코드: {{ child_code }}</p>
+                <p>지역: {{ region }}</p>
+                <p>학교: {{ school_name }}</p>
+            </div>
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3>현재 상태</h3>
+                    <p id="currentStatus">로딩 중...</p>
+                </div>
+                <div class="status-card">
+                    <h3>집중도 점수</h3>
+                    <p id="concentrationScore">0</p>
+                </div>
+                <div class="status-card">
+                    <h3>시선 방향</h3>
+                    <p id="gazeStatus">로딩 중...</p>
+                </div>
+            </div>
+
+            <div class="video-container">
+                <h3>실시간 영상</h3>
+                <img src="{{ video_video_feed_url }}" id="videoFeed" alt="실시간 영상">
+            </div>
+        </div>
+    </div>
+    <script>
+         // 자녀 코드를 JavaScript 변수로 설정
+ const childCode = "{{ child_code }}";
+
+async function updateStatus() {
+    try {
+        const response = await fetch(`/parent/child_status/${childCode}`, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        const data = await response.json();
+        
+        if (data.success) {
+            document.getElementById('currentStatus').textContent = data.status;
+            document.getElementById('concentrationScore').textContent = data.concentration_score;
+            document.getElementById('gazeStatus').textContent = data.gaze_status;
+        }
+    } catch (error) {
+        console.error('상태 업데이트 오류:', error);
+    }
+}
+
+function logout() {
+   // 로그아웃 처리 후 로그인 페이지로 리다이렉트
+   fetch('/parent/logout', {
+       method: 'POST',
+       credentials: 'include'
+   }).then(() => {
+       window.location.href = '/parent/login';
+   });
+}
+
+// 초기 상태 업데이트
+updateStatus();
+
+// 3초마다 상태 업데이트
+setInterval(updateStatus, 3000);
+
+// 비디오 스트림 에러 처리
+document.getElementById('videoFeed').onerror = function() {
+    setTimeout(() => {
+        this.src = `{{ video_feed_url }}`;
+    }, 1000);
+};
+</script>
+</body>
+</html>
